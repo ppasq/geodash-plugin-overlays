@@ -24,30 +24,39 @@ overlays:
         options:
           - text
           - image
-      - id: position.top
-        type: text
-        label: Top
-        placeholder: auto
-        required: true
-        description: "The top position of your static overlayer (in pixels or percentage)."
-      - id: position.bottom
-        type: text
-        label: Bottom
-        placeholder: auto
-        required: true
-        description: "The bottom position of your static overlayer (in pixels or percentage)."
-      - id: position.left
-        type: text
-        label: Left
-        placeholder: auto
-        required: true
-        description: "The left position of your static overlayer (in pixels or percentage)."
-      - id: position.right
-        type: text
-        label: Right
-        placeholder: auto
-        required: true
-        description: "The right position of your static overlayer (in pixels or percentage)."
+      - id: position
+        type: object
+        label: Position
+        placeholder: "position"
+        required: false
+        description: "Position of the overlay."
+        schema:
+          verbose_singular: Position
+          fields:
+            - id: top
+              type: text
+              label: Position / Top
+              placeholder: auto
+              required: true
+              description: "The top position of your static overlayer (in pixels or percentage)."
+            - id: bottom
+              type: text
+              label: Position / Bottom
+              placeholder: auto
+              required: true
+              description: "The bottom position of your static overlayer (in pixels or percentage)."
+            - id: left
+              type: text
+              label: Position / Left
+              placeholder: auto
+              required: true
+              description: "The left position of your static overlayer (in pixels or percentage)."
+            - id: right
+              type: text
+              label: Position / Right
+              placeholder: auto
+              required: true
+              description: "The right position of your static overlayer (in pixels or percentage)."
       - id: width
         type: text
         label: Width
@@ -78,71 +87,102 @@ overlays:
         placeholder: transparent;
         required: false
         description: "The opacity to apply to your static overlayer."
-      - id: text.content
-        type: text
-        label: Text Content
-        placeholder: text
+      - id: text
+        type: object
+        label: Text
+        placeholder: "text"
         required: false
-        description: "The text of your static overlayer."
+        description: "Text of the overlay."
         when:
           field: type
           values:
             - text
-      - id: text.font.family
-        type: text
-        label: Text Font Family
-        placeholder: Arial
+        schema:
+          verbose_singular: Position
+          fields:
+            - id: content
+              type: text
+              label: Text Content
+              placeholder: text
+              required: false
+              description: "The text of your static overlayer."
+            - id: font.family
+              type: text
+              label: Text Font Family
+              placeholder: Arial
+              required: false
+              description: "The font family of your text in your static overlayer."
+              options:
+                - Arial
+                - Open Sans
+                - Verdana
+                - Impact
+            - id: font.size
+              type: text
+              label: Text Font Size
+              placeholder: 12px
+              required: false
+              description: "The font size of your text in your static overlayer."
+            - id: font.style
+              type: text
+              label: Text Font Style
+              placeholder: normal or italic
+              required: false
+              description: "The font style of your text in your static overlayer."
+              options:
+                - normal
+                - italic
+                - oblique
+                - initial
+                - inherit
+            - id: shadow
+              type: text
+              label: Text Shadow
+              placeholder: none;
+              required: false
+              description: "The text-shadow to apply to your static overlayer."
+      - id: image
+        type: object
+        label: Image
+        placeholder: "image"
         required: false
-        description: "The font family of your text in your static overlayer."
-        options:
-          - Arial
-          - Open Sans
-          - Verdana
-          - Impact
-        when:
-          field: type
-          values:
-            - text
-      - id: text.font.size
-        type: text
-        label: Text Font Size
-        placeholder: 12px
-        required: false
-        description: "The font size of your text in your static overlayer."
-        when:
-          field: type
-          values:
-            - text
-      - id: text.font.style
-        type: text
-        label: Text Font Style
-        placeholder: normal or italic
-        required: false
-        description: "The font style of your text in your static overlayer."
-        options:
-          - normal
-          - italic
-        when:
-          field: type
-          values:
-            - text
-      - id: text.shadow
-        type: text
-        label: Text Shadow
-        placeholder: none;
-        required: false
-        description: "The text-shadow to apply to your static overlayer."
-        when:
-          field: type
-          values:
-            - text
-      - id: image.url
-        type: text
-        label: Image Url
-        placeholder: image url
-        required: false
-        description: "The URL of your image static overlayer."
+        description: "Image for the overlay."
         when:
           field: type
           values:
             - image
+        schema:
+          verbose_singular: Image
+          fields:
+            - id: url
+              type: text
+              label: Image Url
+              placeholder: image url
+              required: false
+              description: "The URL of your image static overlayer."
+      - id: link
+        type: object
+        label: Link
+        placeholder: "link"
+        required: false
+        description: "Link for the overlay."
+        schema:
+          verbose_singular: Link
+          fields:
+            - id: url
+              type: text
+              label: Link URL
+              placeholder: url
+              required: true
+              description: "The destination of the link activated on user click."
+            - id: target
+              type: text
+              label: Link Target
+              placeholder: target
+              required: true
+              description: "The target of the link."
+              options:
+                - _blank
+                - _self
+                - _parent
+                - _top
