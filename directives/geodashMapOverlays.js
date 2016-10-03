@@ -10,26 +10,44 @@ geodash.directives["geodashMapOverlays"] = function(){
 
       $scope.map_config = $scope.$parent.map_config;
       $scope.map_config_flat = $scope.$parent.map_config_flat;
+      $scope.assets = geodash.api.arrayToObject(extract("assets", $scope.map_config));
+
+      $scope.imageURL = function(overlay)
+      {
+        if(angular.isString(extract("image.url", overlay)) && extract("image.url", overlay).length > 0)
+        {
+          return extract("image.url", overlay);
+        }
+        else if(angular.isDefined(extract("image.asset", overlay)) && extract("image.asset", overlay).length > 0 )
+        {
+          return extract([extract("image.asset", overlay), "url"], $scope.assets);
+        }
+        else
+        {
+          return "";
+        }
+      }
 
       $scope.style = function(type, overlay)
       {
         var styleMap = {};
 
-        $.extend(styleMap,{
+        angular.extend(styleMap,{
           "top": extract("position.top", overlay, 'auto'),
           "bottom": extract("position.bottom", overlay, 'auto'),
           "left": extract("position.left", overlay, 'auto'),
           "right": extract("position.right", overlay, 'auto'),
-          "padding": extract("padding", overlay, '0'),
-          "background": extract("background", overlay, 'transparent'),
-          "opacity": extract("opacity", overlay, '1.0'),
           "width": extract("width", overlay, 'initial'),
-          "height": extract("height", overlay, 'initial')
+          "height": extract("height", overlay, 'initial'),
+          "padding": "0",
+          "margin": "0",
+          "background": "transparent",
+          "opacity": "1.0"
         });
 
         if(type == "text")
         {
-          $.extend(styleMap, {
+          angular.extend(styleMap, {
             "font-family": extract("text.font.family", overlay, 'Arial'),
             "font-size": extract("text.font.size", overlay, '12px'),
             "font-style": extract("text.font.style", overlay, 'normal'),
@@ -40,9 +58,20 @@ geodash.directives["geodashMapOverlays"] = function(){
         {
 
         }
-        return $.map(styleMap, function(value, style){
-          return style+": "+value
-        }).join(";") +";";
+
+        if(angular.isDefined(extract("intent", overlay)))
+        {
+          angular.extend(styleMap, {
+            "cursor": "pointer"
+          });
+        }
+
+        if(angular.isDefined(extract("css.properties", overlay)))
+        {
+          angular.extend(styleMap, geodash.api.arrayToObject(extract("css.properties", overlay)));
+        }
+
+        return geodash.codec.formatCSS(styleMap);
       };
 
       if(geodash.api.parseTrue($scope.editable))

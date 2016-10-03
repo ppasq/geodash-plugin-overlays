@@ -69,24 +69,37 @@ overlays:
         placeholder: height
         required: true
         description: "The height of your static overlayer (in pixels or percentage)."
-      - id: padding
-        type: text
-        label: Padding
-        placeholder: 0px 0px 0px 0px;
+      - id: css
+        type: object
+        label: CSS
+        placeholder: "css"
         required: false
-        description: "The padding to apply to your static overlayer."
-      - id: background
-        type: text
-        label: Background
-        placeholder: transparent;
-        required: false
-        description: "The background to apply to your static overlayer."
-      - id: opacity
-        type: text
-        label: Opacity
-        placeholder: transparent;
-        required: false
-        description: "The opacity to apply to your static overlayer."
+        description: "Additional CSS for the overlay."
+        schema:
+          verbose_singular: CSS
+          fields:
+            - id: properties
+              type: objectarray
+              label: Intent Additional CSS Properties
+              placeholder: "properties"
+              required: false
+              description: "The additional css properties of the intent, such as margin, padding, border, etc."
+              schema:
+                verbose_singular: Property
+                verbose_plural: Properties
+                fields:
+                  - id: name
+                    type: text
+                    label: Property Name
+                    placeholder: "name"
+                    required: true
+                    description: "The name of the property."
+                  - id: value
+                    type: template
+                    label: Property value
+                    placeholder: "value"
+                    required: true
+                    description: "The value of the property."
       - id: text
         type: object
         label: Text
@@ -154,6 +167,15 @@ overlays:
         schema:
           verbose_singular: Image
           fields:
+            - id: asset
+              type: text
+              label: Image Asset ID
+              placeholder: image asset ID
+              required: false
+              description: "The id of the image asset."
+              search:
+                datasets:
+                  - Images
             - id: url
               type: text
               label: Image Url
@@ -186,3 +208,46 @@ overlays:
                 - _self
                 - _parent
                 - _top
+      - id: intent
+        type: object
+        label: Intent
+        placeholder: "intent"
+        required: false
+        description: "Intent for the overlay."
+        schema:
+          verbose_singular: Intent
+          fields:
+            - id: name
+              type: text
+              label: Intent Name
+              placeholder: name
+              required: true
+              description: "The intent to emit."
+              search:
+                local:
+                  name: reflect
+                  args:
+                    locations:
+                      - handlers
+            - id: properties
+              type: objectarray
+              label: Intent Properties
+              placeholder: "properties"
+              required: false
+              description: "The properties of the intent, such as layer id, location, etc."
+              schema:
+                verbose_singular: Property
+                verbose_plural: Properties
+                fields:
+                  - id: name
+                    type: text
+                    label: Property Name
+                    placeholder: "name"
+                    required: true
+                    description: "The name of the property."
+                  - id: value
+                    type: template
+                    label: Property value
+                    placeholder: "value"
+                    required: true
+                    description: "The value of the property."

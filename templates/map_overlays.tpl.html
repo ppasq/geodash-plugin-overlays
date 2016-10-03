@@ -5,24 +5,27 @@
         ng-if="overlay.type == 'text'"
         data-overlay-index="{{ $index }}"
         data-overlay-type="text"
-        class="geodash-map-overlay"
-        height="{{ overlay.height | default_if_undefined : initial }}"
-        width="{{ overlay.width | default_if_undefined : initial }}"
+        class="geodash-map-overlay {{ overlay.intent | ternary_defined : 'geodash-intent' : '' }}"
+        width="{{ overlay.width | default_if_undefined : '' }}"
+        height="{{ overlay.height | default_if_undefined : '' }}"
         style="{{ style(overlay.type, overlay) }}"
-        ng-bind-html="overlay.text.content | md2html"
-        on-link-done="overlayLoaded">
+        data-intent-name="{{ overlay.intent.name }}"
+        data-intent-data="{{ overlay.intent.properties | arrayToObject | json : 0 }}"
+        data-intent-ctrl="geodash-map-overlays"
+        on-link-done="overlayLoaded"
+        ng-bind-html="overlay.text.content | md2html">
       </div>
       <div
         ng-if="overlay.type == 'image'"
         data-overlay-index="{{ $index }}"
         data-overlay-type="image"
-        class="geodash-map-overlay"
+        class="geodash-map-overlay {{ overlay.intent | ternary_defined : 'geodash-intent' : '' }}"
         style="display: inline-block; {{ style(overlay.type, overlay) }}"
-        on-link-done="overlayLoaded">
-        <img
-          ng-src="{{ overlay.image.url }}"
-          width="{{ overlay.width }}"
-          height="{{ overlay.height }}">
+        on-link-done="overlayLoaded"
+        data-intent-name="{{ overlay.intent.name  }}"
+        data-intent-data="{{ overlay.intent.properties | arrayToObject | json : 0 }}"
+        data-intent-ctrl="geodash-map-overlays">
+        <img ng-src="{{ imageURL(overlay) }}" width="{{ overlay.width }}" height="{{ overlay.height }}">
       </div>
     </div>
     <a
@@ -34,11 +37,11 @@
         data-overlay-index="{{ $index }}"
         data-overlay-type="text"
         class="geodash-map-overlay"
-        height="{{ overlay.height | default_if_undefined : initial }}"
         width="{{ overlay.width | default_if_undefined : initial }}"
+        height="{{ overlay.height | default_if_undefined : initial }}"
         style="{{ style(overlay.type, overlay) }}"
-        ng-bind-html="overlay.text.content | md2html"
-        on-link-done="overlayLoaded">
+        on-link-done="overlayLoaded"
+        ng-bind-html="overlay.text.content | md2html">
       </div>
       <div
         ng-if="overlay.type == 'image'"
@@ -47,10 +50,7 @@
         class="geodash-map-overlay"
         style="display: inline-block; {{ style(overlay.type, overlay) }}"
         on-link-done="overlayLoaded">
-        <img
-          ng-src="{{ overlay.image.url }}"
-          width="{{ overlay.width }}"
-          height="{{ overlay.height }}">
+        <img ng-src="{{ imageURL(overlay) }}" width="{{ overlay.width }}" height="{{ overlay.height }}">
       </div>
     </a>
   </div>
