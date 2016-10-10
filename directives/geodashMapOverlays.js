@@ -1,80 +1,15 @@
-geodash.directives["geodashMapOverlays"] = function(){
+geodash.directives.geodashMapOverlays = function(){
   return {
+    controller: geodash.controllers.GeoDashControllerOverlays,
     restrict: 'EA',
     replace: true,
     scope: {
       'editable': '@editable'
     },
     templateUrl: 'map_overlays.tpl.html',
-    link: function ($scope, element, attrs){
-
-      $scope.map_config = $scope.$parent.map_config;
-      $scope.map_config_flat = $scope.$parent.map_config_flat;
-      $scope.assets = geodash.api.arrayToObject(extract("assets", $scope.map_config));
-
-      $scope.imageURL = function(overlay)
-      {
-        if(angular.isString(extract("image.url", overlay)) && extract("image.url", overlay).length > 0)
-        {
-          return extract("image.url", overlay);
-        }
-        else if(angular.isDefined(extract("image.asset", overlay)) && extract("image.asset", overlay).length > 0 )
-        {
-          return extract([extract("image.asset", overlay), "url"], $scope.assets);
-        }
-        else
-        {
-          return "";
-        }
-      }
-
-      $scope.style = function(type, overlay)
-      {
-        var styleMap = {};
-
-        angular.extend(styleMap,{
-          "top": extract("position.top", overlay, 'auto'),
-          "bottom": extract("position.bottom", overlay, 'auto'),
-          "left": extract("position.left", overlay, 'auto'),
-          "right": extract("position.right", overlay, 'auto'),
-          "width": extract("width", overlay, 'initial'),
-          "height": extract("height", overlay, 'initial'),
-          "padding": "0",
-          "margin": "0",
-          "background": "transparent",
-          "opacity": "1.0"
-        });
-
-        if(type == "text")
-        {
-          angular.extend(styleMap, {
-            "font-family": extract("text.font.family", overlay, 'Arial'),
-            "font-size": extract("text.font.size", overlay, '12px'),
-            "font-style": extract("text.font.style", overlay, 'normal'),
-            "text-shadow": extract("text.shadow", overlay, 'none')
-          });
-        }
-        else if(type == "image")
-        {
-
-        }
-
-        if(angular.isDefined(extract("intent", overlay)))
-        {
-          angular.extend(styleMap, {
-            "cursor": "pointer"
-          });
-        }
-
-        if(angular.isDefined(extract("css.properties", overlay)))
-        {
-          angular.extend(styleMap, geodash.api.arrayToObject(extract("css.properties", overlay)));
-        }
-
-        return geodash.codec.formatCSS(styleMap);
-      };
-
-      if(geodash.api.parseTrue($scope.editable))
+    link: function ($scope, element, attrs, controllers)
+    {
+      if(geodash.util.parseTrue($scope.editable))
       {
         $(element).on('mouseenter', '.geodash-map-overlay', function(event, args){
           $(this).draggable('enable');
@@ -125,7 +60,7 @@ geodash.directives["geodashMapOverlays"] = function(){
               console.log(event, args);
               var newPosition = args.position;
               var overlayIndex = $(this).data('overlay-index');
-              var scope = geodash.api.getScope("geodash-sidebar-right");
+              var scope = geodash.util.getScope("geodash-sidebar-right");
               if(scope != undefined)
               {
                 var mapWidth = container.width();
@@ -148,7 +83,6 @@ geodash.directives["geodashMapOverlays"] = function(){
             }
           });
         });
-
       }
     }
   };

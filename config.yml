@@ -1,5 +1,7 @@
 ---
-controllers: []
+name: geodash-plugin-overlays
+controllers:
+  - GeoDashControllerOverlays.js
 directives:
   - geodashMapOverlays.js
 templates:

@@ -1,5 +1,7 @@
-<div ng-class="['geodash-map-overlays', ((editable | parseTrue) ? 'editable': '')]">
-  <div ng-repeat="overlay in map_config.overlays track by $index">
+<div
+  id="geodash-map-overlays"
+  class="geodash-map-overlays">
+  <div ng-repeat="overlay in dashboard.overlays track by $index">
     <div ng-if="overlay.link | ternary_defined : false : true">
       <div
         ng-if="overlay.type == 'text'"
