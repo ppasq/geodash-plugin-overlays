@@ -100,6 +100,28 @@ overlays:
                     placeholder: "value"
                     required: true
                     description: "The value of the property."
+      - id: tooltip
+        type: object
+        label: Tooltip
+        placeholder: "tooltip"
+        required: false
+        description: "Tooltip"
+        schema:
+          verbose_singular: Tooltip
+          fields:
+            - id: content
+              type: template
+              label: Tooltip / Content
+              placeholder: auto
+              required: true
+              description: "The content of the tooltip."
+            - id: placement
+              type: text
+              label: Tooltip / Placement
+              placeholder: auto
+              required: true
+              description: "The placement of the tooltip."
+              options: [top, left, bottom, right]
       - id: text
         type: object
         label: Text

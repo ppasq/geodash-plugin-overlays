@@ -14,6 +14,9 @@
         data-intent-name="{{ overlay.intent.name }}"
         data-intent-data="{{ overlay.intent.properties | arrayToObject | json : 0 }}"
         data-intent-ctrl="geodash-map-overlays"
+        data-toggle="{{ overlay.tooltip | ternary_defined : 'tooltip': '' }}"
+        data-placement="{{ overlay | extract : 'tooltip' : 'placement' | default_if_undefined_or_blank : '' }}"
+        ng-attr-title="{{ overlay | extract : 'tooltip' : 'content' | default_if_undefined_or_blank : '' }}"
         on-link-done="overlayLoaded"
         ng-bind-html="overlay.text.content | md2html">
       </div>
@@ -26,7 +29,10 @@
         on-link-done="overlayLoaded"
         data-intent-name="{{ overlay.intent.name  }}"
         data-intent-data="{{ overlay.intent.properties | arrayToObject | json : 0 }}"
-        data-intent-ctrl="geodash-map-overlays">
+        data-intent-ctrl="geodash-map-overlays"
+        data-toggle="{{ overlay.tooltip | ternary_defined : 'tooltip': '' }}"
+        data-placement="{{ overlay | extract : 'tooltip' : 'placement' | default_if_undefined_or_blank : '' }}"
+        ng-attr-title="{{ overlay | extract : 'tooltip' : 'content' | default_if_undefined_or_blank : '' }}">
         <img ng-src="{{ imageURL(overlay) }}" width="{{ overlay.width }}" height="{{ overlay.height }}">
       </div>
     </div>
@@ -42,6 +48,9 @@
         width="{{ overlay.width | default_if_undefined : initial }}"
         height="{{ overlay.height | default_if_undefined : initial }}"
         style="{{ style(overlay.type, overlay) }}"
+        data-toggle="{{ overlay.tooltip | ternary_defined : 'tooltip': '' }}"
+        data-placement="{{ overlay | extract : 'tooltip' : 'placement' | default_if_undefined_or_blank : '' }}"
+        ng-attr-title="{{ overlay | extract : 'tooltip' : 'content' | default_if_undefined_or_blank : '' }}"
         on-link-done="overlayLoaded"
         ng-bind-html="overlay.text.content | md2html">
       </div>
@@ -51,6 +60,9 @@
         data-overlay-type="image"
         class="geodash-map-overlay"
         style="display: inline-block; {{ style(overlay.type, overlay) }}"
+        data-toggle="{{ overlay.tooltip | ternary_defined : 'tooltip': '' }}"
+        data-placement="{{ overlay | extract : 'tooltip' : 'placement' | default_if_undefined_or_blank : '' }}"
+        ng-attr-title="{{ overlay | extract : 'tooltip' : 'content' | default_if_undefined_or_blank : '' }}"
         on-link-done="overlayLoaded">
         <img ng-src="{{ imageURL(overlay) }}" width="{{ overlay.width }}" height="{{ overlay.height }}">
       </div>

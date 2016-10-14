@@ -9,6 +9,8 @@ geodash.directives.geodashMapOverlays = function(){
     templateUrl: 'map_overlays.tpl.html',
     link: function ($scope, element, attrs, controllers)
     {
+      setTimeout(function(){ geodash.ui.update(element); }, 0);
+      
       if(geodash.util.parseTrue($scope.editable))
       {
         $(element).on('mouseenter', '.geodash-map-overlay', function(event, args){
