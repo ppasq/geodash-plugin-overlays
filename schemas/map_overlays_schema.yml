@@ -37,7 +37,7 @@ overlays:
         placeholder: height
         required: true
         description: "The height of your static overlayer (in pixels or percentage)."
-      - { template: css, overrides: {description: "Additional CSS for the overlay." } 
+      - { template: css, overrides: {description: "Additional CSS for the overlay." } }
       - tooltip
       - id: text
         type: object
