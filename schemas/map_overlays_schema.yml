@@ -121,30 +121,5 @@ overlays:
               placeholder: image url
               required: false
               description: "The URL of your image static overlayer."
-      - id: link
-        type: object
-        label: Link
-        placeholder: "link"
-        required: false
-        description: "Link for the overlay."
-        schema:
-          verbose_singular: Link
-          fields:
-            - id: url
-              type: text
-              label: Link URL
-              placeholder: url
-              required: true
-              description: "The destination of the link activated on user click."
-            - id: target
-              type: text
-              label: Link Target
-              placeholder: target
-              required: true
-              description: "The target of the link."
-              options:
-                - _blank
-                - _self
-                - _parent
-                - _top
-      - { template: intent, overrides: {description: "Intent for the overlay." } }
+      - { template: link, overrides: {description: "Link for the overlay." } }
+      - { template: intents, overrides: {description: "Intent for the overlay." } }

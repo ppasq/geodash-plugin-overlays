@@ -1,4 +1,4 @@
-geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $controller)
+geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $controller, $interpolate)
 {
   angular.extend(this, $controller('GeoDashControllerBase', {$element: $element, $scope: $scope}));
   //
@@ -23,6 +23,16 @@ geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $cont
     {
       return "";
     }
+  };
+
+  $scope.class_overlay = function(overlay)
+  {
+    var str = "geodash-map-overlay";
+    if(angular.isDefined(extract("intents", overlay)) || angular.isDefined(extract("intent", overlay)))
+    {
+      str += " geodash-intent";
+    }
+    return str;
   };
 
   $scope.style = function(type, overlay)
@@ -56,7 +66,7 @@ geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $cont
 
     }
 
-    if(angular.isDefined(extract("intent", overlay)))
+    if(angular.isDefined(extract("intents", overlay)) || angular.isDefined(extract("intent", overlay)))
     {
       angular.extend(styleMap, {
         "cursor": "pointer"
@@ -69,6 +79,34 @@ geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $cont
     }
 
     return geodash.codec.formatCSS(styleMap);
+  };
+
+  $scope.intents = function(overlay)
+  {
+    var data = [];
+    var intents = extract("intents", overlay);
+    if(Array.isArray(intents))
+    {
+      for(var i = 0; i < intents.length; i++)
+      {
+        var intent = intents[i];
+        var intentName = intent.name;
+        if(angular.isDefined(intentName))
+        {
+          var intentProperties = intent.properties;
+          if(angular.isDefined(intentProperties))
+          {
+            var intentData = geodash.util.arrayToObject(intentProperties, {'$interpolate': $interpolate, 'ctx': {'overlay': overlay}});
+            data.push({ "name": intent.name, "data": intentData });
+          }
+          else
+          {
+            data.push({ "name": intent.name });
+          }
+        }
+      }
+    }
+    return data;
   };
 
 };
