@@ -32,6 +32,20 @@ geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $cont
     {
       str += " geodash-intent";
     }
+
+    var classes = extract("css.classes", overlay);
+    if(angular.isDefined(classes))
+    {
+      if(angular.isString(classes))
+      {
+        str += " " + classes;
+      }
+      else if(Array.isArray(classes))
+      {
+        str += " " + classes.join(" ");
+      }
+    }
+
     return str;
   };
 
