@@ -8,7 +8,8 @@ geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $cont
   $scope.state = geodash.util.deepCopy(mainScope.state);
   $scope.assets = geodash.util.arrayToObject(extract("assets", $scope.dashboard));
   //////////////
-
+  console.log('--- LOADING GeoDashControllerOverlays ---');
+  console.log($scope);
   $scope.imageURL = function(overlay)
   {
     if(angular.isString(extract("image.url", overlay)) && extract("image.url", overlay).length > 0)
@@ -98,28 +99,23 @@ geodash.controllers.GeoDashControllerOverlays = function($scope, $element, $cont
   $scope.intents = function(overlay)
   {
     var data = [];
-    var intents = extract("intents", overlay);
-    if(Array.isArray(intents))
+    var intents = extract("intent", overlay) || extract("intents", overlay);
+
+    var intentName = intents.name;
+    if(angular.isDefined(intentName))
     {
-      for(var i = 0; i < intents.length; i++)
+      var intentProperties = intents.properties;
+      if(angular.isDefined(intentProperties))
       {
-        var intent = intents[i];
-        var intentName = intent.name;
-        if(angular.isDefined(intentName))
-        {
-          var intentProperties = intent.properties;
-          if(angular.isDefined(intentProperties))
-          {
-            var intentData = geodash.util.arrayToObject(intentProperties, {'$interpolate': $interpolate, 'ctx': {'overlay': overlay}});
-            data.push({ "name": intent.name, "data": intentData });
-          }
-          else
-          {
-            data.push({ "name": intent.name });
-          }
-        }
+        var intentData = geodash.util.arrayToObject(intentProperties, {'$interpolate': $interpolate, 'ctx': {'overlay': overlay}});
+        data.push({ "name": intents.name, "data": intentData });
+      }
+      else
+      {
+        data.push({ "name": intents.name });
       }
     }
+
     return data;
   };
 
